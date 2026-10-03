@@ -9,36 +9,37 @@
 <style>
 :root{
   --bg:#F2F5F7; --panel:#FFFFFF; --ink:#16202A; --muted:#5B6773; --line:#D8DFE5;
-  --accent:#0F7C8C; --accent-ink:#FFFFFF; --ok:#1E8A4C; --warn:#B4621B;
-  --skin:#E8B48C; --skin-edge:#8A5A3C;
+  --accent:#0F7C8C; --accent-ink:#FFFFFF; --ok:#1E8A4C;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
   --bg:#0E1419; --panel:#172129; --ink:#E8EEF2; --muted:#9AA7B2; --line:#2A3742;
-  --accent:#3DB6C6; --accent-ink:#06161A; --skin:#D9A47C; --skin-edge:#F2D3BC;
+  --accent:#3DB6C6; --accent-ink:#06161A; --ok:#5FD08F;
 }}
 :root[data-theme="dark"]{
   --bg:#0E1419; --panel:#172129; --ink:#E8EEF2; --muted:#9AA7B2; --line:#2A3742;
-  --accent:#3DB6C6; --accent-ink:#06161A; --skin:#D9A47C; --skin-edge:#F2D3BC;
+  --accent:#3DB6C6; --accent-ink:#06161A; --ok:#5FD08F;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);
   font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
-main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
 h1{font-size:1.6rem;line-height:1.2;margin:4px 0 4px}
+h2{font-size:1.1rem;margin:4px 0 6px}
 .sub{color:var(--muted);margin:0 0 18px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .tab{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 16px;border-radius:999px;font:inherit;cursor:pointer}
 .tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 button,select,input{font:inherit}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .btn{background:var(--accent);color:var(--accent-ink);border:0;padding:10px 16px;border-radius:10px;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:6px 10px;font-size:.9rem}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .grid{display:grid;gap:16px;grid-template-columns:1fr}
-@media(min-width:820px){.grid{grid-template-columns:1.25fr 1fr}}
+@media(min-width:820px){.grid{grid-template-columns:1.2fr 1fr}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
 .stage{position:relative;width:100%;aspect-ratio:4/3;background:#000;border-radius:10px;overflow:hidden}
 .stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -50,18 +51,30 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .out{font-size:1.5rem;min-height:3.2rem;padding:10px 12px;border:1px solid var(--line);border-radius:10px;word-break:break-word;margin:12px 0 10px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .hidden{display:none!important}
-textarea{width:100%;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);resize:vertical}
-.signcanvas{width:100%;aspect-ratio:1/1;max-height:440px;display:block;background:var(--bg);border-radius:10px}
-.word{font-size:1.4rem;letter-spacing:.08em;margin:10px 0;word-break:break-word}
-.word .cur{background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:0 3px}
-.letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin:12px 0}
-.lt{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:6px 0;cursor:pointer;text-align:center}
-.lt b{display:block;font-size:1.3rem}
+textarea,input[type=text],select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+textarea{resize:vertical}
+.view3d{position:relative;width:100%;aspect-ratio:1/1;max-height:520px;border-radius:10px;background:var(--bg);overflow:hidden;touch-action:none;cursor:grab}
+.view3d canvas{display:block;width:100%!important;height:100%!important}
+.view3d .tag{position:absolute;left:14px;top:10px;font-size:2rem;font-weight:700;color:var(--accent);pointer-events:none}
+.view3d .hint{position:absolute;right:12px;bottom:8px;font-size:.8rem;color:var(--muted);pointer-events:none}
+.word{font-size:1.3rem;margin:10px 0;word-break:break-word}
+.word span{padding:0 2px;border-radius:4px}
+.word .cur{background:var(--accent);color:var(--accent-ink)}
+.letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;margin:10px 0}
+.lt{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:5px 0;cursor:pointer;text-align:center}
+.lt b{display:block;font-size:1.2rem}
 .lt small{color:var(--muted)}
 .lt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
 .lt.has small{color:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.9rem}
+.plist{list-style:none;padding:0;margin:10px 0 0}
+.plist li{display:flex;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.plist li span{flex:1}
+.plist small{color:var(--muted)}
 label.inline{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.95rem}
 p.help{color:var(--muted);font-size:.95rem;margin:6px 0}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
 </style>
 </head>
 <body>
@@ -72,10 +85,9 @@ p.help{color:var(--muted);font-size:.95rem;margin:6px 0}
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-view="v-read">Señas a texto</button>
     <button class="tab" role="tab" aria-selected="false" data-view="v-show">Texto a señas</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="v-train">Entrenar letras</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="v-train">Entrenar</button>
   </div>
 
-  <!-- Cámara compartida por "Señas a texto" y "Entrenar" -->
   <section id="camBlock" class="grid">
     <div class="panel">
       <div class="stage">
@@ -107,70 +119,97 @@ p.help{color:var(--muted);font-size:.95rem;margin:6px 0}
 
     <!-- Entrenar -->
     <div class="panel hidden" id="v-train">
-      <p class="help">Elige una letra, haz la seña frente a la cámara y presiona Grabar. Mueve un poco la mano mientras graba (más cerca, más lejos, girada) para que reconozca la seña en distintas condiciones.</p>
+      <h2>Letras</h2>
+      <p class="help">Elige una letra, haz la seña y presiona Grabar. Mueve un poco la mano mientras graba.</p>
       <div class="letters" id="letters"></div>
       <div class="row">
         <button class="btn" id="recBtn" disabled>Grabar 40 muestras</button>
         <button class="btn ghost" id="delLetterBtn">Borrar esta letra</button>
       </div>
       <div class="status" id="recStatus"></div>
-      <div class="row" style="margin-top:12px">
+
+      <hr>
+      <h2>Frases</h2>
+      <p class="help">Pon tu cara dentro del círculo de la cámara, escribe el nombre de la frase y presiona Grabar. Hay una cuenta de 3 segundos antes de empezar. Se graban las dos manos y su movimiento.</p>
+      <input type="text" id="phraseName" placeholder="Nombre de la frase, por ejemplo: buenos días">
+      <div class="chips" id="phraseChips"></div>
+      <div class="row">
+        <select id="phraseDur" style="width:auto">
+          <option value="2000">2 segundos</option>
+          <option value="3000" selected>3 segundos</option>
+          <option value="4000">4 segundos</option>
+        </select>
+        <button class="btn" id="phraseRecBtn" disabled>Grabar frase</button>
+      </div>
+      <div class="status" id="phraseStatus"></div>
+      <ul class="plist" id="phraseList"></ul>
+
+      <hr>
+      <div class="row">
         <button class="btn ghost" id="exportBtn">Descargar datos</button>
         <label class="btn ghost" style="cursor:pointer">Cargar datos
           <input type="file" id="importFile" accept="application/json" class="hidden">
         </label>
       </div>
-      <p class="help">Para que todo el equipo use las mismas letras, descarga los datos como <b>dataset.json</b> y súbelo junto a esta página.</p>
+      <p class="help">Para que todo el equipo use lo mismo, descarga los datos como <b>dataset.json</b> y súbelo a GitHub junto a esta página.</p>
     </div>
   </section>
 
   <!-- Texto a señas -->
   <section id="v-show" class="grid hidden">
     <div class="panel">
-      <canvas id="signCanvas" class="signcanvas" width="600" height="600"></canvas>
+      <div class="view3d" id="view3d">
+        <div class="tag" id="tag3d"></div>
+        <div class="hint">Arrastra para girar · doble toque para centrar</div>
+      </div>
     </div>
     <div class="panel">
-      <textarea id="inText" rows="3" placeholder="Escribe una palabra o frase">HOLA</textarea>
+      <textarea id="inText" rows="3" placeholder="Escribe una frase">Buenos días, ¿cómo estás?</textarea>
       <div class="row" style="margin-top:10px">
         <button class="btn" id="playBtn">Mostrar en señas</button>
         <button class="btn ghost" id="stopBtn">Detener</button>
       </div>
       <label class="inline" style="margin-top:12px">Velocidad
-        <input type="range" id="speed" min="300" max="1800" step="100" value="900">
+        <input type="range" id="speed" min="0.5" max="1.5" step="0.1" value="1">
       </label>
       <div class="word" id="wordView"></div>
-      <p class="help" id="showHelp"></p>
+      <p class="help" id="showHelp">Las frases grabadas se muestran completas; las palabras que no estén grabadas se deletrean letra por letra.</p>
     </div>
   </section>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script type="module">
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
 
 const ALPHABET = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+const SUGGESTED = ["hola","buenos días","buenas tardes","buenas noches","cómo estás","bien","gracias","por favor","de nada","adiós","mi nombre es"];
 const KEY = "traductor-senas-dataset-v1";
 const CONN = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],
               [9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+const K = 2.4;            // alto de la imagen de cámara en unidades 3D
+const HEAD = {x:0.5, y:0.3, r:0.11};  // guía de la cara en la cámara (fracción de la imagen)
 const $ = id => document.getElementById(id);
 
-/* ---------- Datos ---------- */
-let data = { version:1, samples:{} };
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
-function load(){
-  try{ const s = localStorage.getItem(KEY); if(s) data = JSON.parse(s); }catch(e){}
-  if(!data.samples) data.samples = {};
+/* ================= Datos ================= */
+let data = { version:2, samples:{}, phrases:{} };
+function fix(){ data.samples ||= {}; data.phrases ||= {}; data.version = 2; }
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(data)); return true; }
+  catch(e){ $("phraseStatus").textContent = "El navegador se quedó sin espacio. Descarga los datos y borra frases repetidas."; return false; }
 }
+function load(){ try{ const s = localStorage.getItem(KEY); if(s) data = JSON.parse(s); }catch(e){} fix(); }
 async function loadShared(){
-  // Si junto a la página existe dataset.json, se usa cuando el navegador aún no tiene datos
-  if(Object.keys(data.samples).length) return;
-  try{
-    const r = await fetch("./dataset.json", {cache:"no-store"});
-    if(r.ok){ const j = await r.json(); if(j.samples){ data = j; save(); } }
-  }catch(e){}
+  if(Object.keys(data.samples).length || Object.keys(data.phrases).length) return;
+  try{ const r = await fetch("./dataset.json", {cache:"no-store"}); if(r.ok){ const j = await r.json(); if(j.samples){ data = j; fix(); save(); } } }catch(e){}
+}
+// Texto sin tildes ni signos, conservando la Ñ
+function clean(s){
+  return s.toUpperCase().replace(/Ñ/g,"\u0001").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+          .replace(/\u0001/g,"Ñ").replace(/[^A-ZÑ0-9 ]/g," ").replace(/\s+/g," ").trim();
 }
 
-/* ---------- Normalización de la mano ---------- */
-// Centra en la muñeca, escala por el tamaño de la palma y unifica mano izquierda/derecha.
+/* ================= Letras: normalización y clasificador ================= */
 function normalize(lm, handed){
   const w = lm[0], m = lm[9];
   const s = Math.hypot(m.x-w.x, m.y-w.y, m.z-w.z) || 1;
@@ -179,218 +218,345 @@ function normalize(lm, handed){
   for(const p of lm) f.push(+(flip*(p.x-w.x)/s).toFixed(3), +((p.y-w.y)/s).toFixed(3), +((p.z-w.z)/s).toFixed(3));
   return f;
 }
-function dist(a,b){
-  let t = 0;
-  for(let i=0;i<63;i+=3) t += Math.hypot(a[i]-b[i], a[i+1]-b[i+1], a[i+2]-b[i+2]);
-  return t/21;
-}
-
-/* ---------- Clasificador k vecinos ---------- */
+function dist(a,b){ let t=0; for(let i=0;i<63;i+=3) t += Math.hypot(a[i]-b[i],a[i+1]-b[i+1],a[i+2]-b[i+2]); return t/21; }
 function classify(f){
   const all = [];
-  for(const [L, arr] of Object.entries(data.samples)) for(const s of arr) all.push([dist(f,s), L]);
+  for(const [L,arr] of Object.entries(data.samples)) for(const s of arr) all.push([dist(f,s),L]);
   if(all.length < 5) return null;
   all.sort((a,b)=>a[0]-b[0]);
-  const k = Math.min(7, all.length), votes = {};
-  for(let i=0;i<k;i++) votes[all[i][1]] = (votes[all[i][1]]||0) + 1;
-  const [L, v] = Object.entries(votes).sort((a,b)=>b[1]-a[1])[0];
-  return { letter:L, conf:v/k, d:all[0][0] };
+  const k = Math.min(7,all.length), votes = {};
+  for(let i=0;i<k;i++) votes[all[i][1]] = (votes[all[i][1]]||0)+1;
+  const [L,v] = Object.entries(votes).sort((a,b)=>b[1]-a[1])[0];
+  return {letter:L, conf:v/k, d:all[0][0]};
 }
 
-/* ---------- Cámara + detector ---------- */
-let landmarker = null, stream = null, facing = "user", running = false, lastT = -1;
-const video = $("video"), overlay = $("overlay"), octx = overlay.getContext("2d");
+/* ================= Cámara + detector ================= */
+let landmarker=null, stream=null, facing="user", running=false, lastT=-1;
+const video=$("video"), overlay=$("overlay"), octx=overlay.getContext("2d");
 
 async function initDetector(){
   try{
     const files = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
-    landmarker = await HandLandmarker.createFromOptions(files, {
+    landmarker = await HandLandmarker.createFromOptions(files,{
       baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate:"GPU" },
-      runningMode:"VIDEO", numHands:1
+      runningMode:"VIDEO", numHands:2
     });
     $("status").textContent = "Listo. Enciende la cámara.";
-  }catch(e){
-    $("status").textContent = "No se pudo cargar el detector de manos. Revisa la conexión a internet y recarga la página.";
-  }
+  }catch(e){ $("status").textContent = "No se pudo cargar el detector de manos. Revisa la conexión y recarga la página."; }
 }
-
 async function startCam(){
   if(stream) stream.getTracks().forEach(t=>t.stop());
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:facing, width:{ideal:640}, height:{ideal:480} }, audio:false });
-  }catch(e){
-    $("status").textContent = "La cámara está bloqueada. Permite el acceso en el navegador; la página debe abrirse con https.";
-    return;
-  }
+  try{ stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:640},height:{ideal:480}},audio:false}); }
+  catch(e){ $("status").textContent = "La cámara está bloqueada. Permite el acceso en el navegador; la página debe abrirse con https."; return; }
   video.srcObject = stream; await video.play();
-  const mir = facing === "user";
-  video.classList.toggle("mirror", mir); overlay.classList.toggle("mirror", mir);
-  $("flipBtn").disabled = false; $("recBtn").disabled = false;
-  $("startBtn").textContent = "Reiniciar cámara";
-  $("status").textContent = "Cámara encendida. Muestra una mano.";
-  if(!running){ running = true; requestAnimationFrame(loop); }
+  const mir = facing==="user";
+  video.classList.toggle("mirror",mir); overlay.classList.toggle("mirror",mir);
+  $("flipBtn").disabled=false; $("recBtn").disabled=false; $("phraseRecBtn").disabled=false;
+  $("startBtn").textContent="Reiniciar cámara";
+  $("status").textContent="Cámara encendida. Muestra tus manos.";
+  if(!running){ running=true; requestAnimationFrame(loop); }
+}
+function drawOverlay(hands){
+  const W=overlay.width=video.videoWidth, H=overlay.height=video.videoHeight;
+  octx.clearRect(0,0,W,H);
+  if(view==="v-train"){ // guía para la cara al grabar frases
+    octx.setLineDash([10,8]); octx.lineWidth=3; octx.strokeStyle="rgba(255,255,255,.7)";
+    octx.beginPath(); octx.ellipse(HEAD.x*W, HEAD.y*H, HEAD.r*H*0.82, HEAD.r*H*1.1, 0, 0, 7); octx.stroke(); octx.setLineDash([]);
+  }
+  octx.lineWidth=4; octx.strokeStyle="rgba(61,182,198,.9)"; octx.lineCap="round"; octx.fillStyle="#fff";
+  for(const lm of hands){
+    for(const [a,b] of CONN){ octx.beginPath(); octx.moveTo(lm[a].x*W,lm[a].y*H); octx.lineTo(lm[b].x*W,lm[b].y*H); octx.stroke(); }
+    for(const p of lm){ octx.beginPath(); octx.arc(p.x*W,p.y*H,4,0,7); octx.fill(); }
+  }
+}
+// Mano de la cámara -> puntos 3D (misma escala que la escena)
+function toScene(lm){
+  const a = video.videoWidth/video.videoHeight, out=[];
+  for(const p of lm) out.push(+((p.x-0.5)*a*K).toFixed(3), +((0.5-p.y)*K).toFixed(3), +(0.3 - p.z*a*K).toFixed(3));
+  return out;
 }
 
-function drawOverlay(lm){
-  overlay.width = video.videoWidth; overlay.height = video.videoHeight;
-  octx.clearRect(0,0,overlay.width,overlay.height);
-  if(!lm) return;
-  octx.lineWidth = 4; octx.strokeStyle = "rgba(61,182,198,.9)"; octx.lineCap = "round";
-  for(const [a,b] of CONN){ octx.beginPath(); octx.moveTo(lm[a].x*overlay.width, lm[a].y*overlay.height); octx.lineTo(lm[b].x*overlay.width, lm[b].y*overlay.height); octx.stroke(); }
-  octx.fillStyle = "#fff";
-  for(const p of lm){ octx.beginPath(); octx.arc(p.x*overlay.width, p.y*overlay.height, 4, 0, 7); octx.fill(); }
-}
-
-/* ---------- Bucle principal ---------- */
-let view = "v-read", rec = 0, recLetter = "A", recSkip = 0;
-let stableL = null, stableN = 0, locked = null, noHand = 0, text = "";
+/* ================= Bucle principal ================= */
+let view="v-read", rec=0, recLetter="A", recSkip=0;
+let stableL=null, stableN=0, locked=null, noHand=0, text="";
+let pRec=null; // grabación de frase
 
 function loop(){
-  if(landmarker && video.readyState >= 2 && video.currentTime !== lastT){
-    lastT = video.currentTime;
+  if(landmarker && video.readyState>=2 && video.currentTime!==lastT){
+    lastT=video.currentTime;
     const r = landmarker.detectForVideo(video, performance.now());
-    const lm = r.landmarks && r.landmarks[0];
-    drawOverlay(lm);
-    if(lm){
-      noHand = 0;
+    const hands = r.landmarks || [];
+    drawOverlay(hands);
+    if(view==="v-train" && pRec) phraseTick(hands);
+    if(hands.length){
+      noHand=0;
       const handed = r.handednesses?.[0]?.[0]?.categoryName || "Right";
-      const f = normalize(lm, handed);
-      if(view === "v-train" && rec > 0){
-        if(++recSkip % 2 === 0){
+      const f = normalize(hands[0], handed);
+      if(view==="v-train" && rec>0 && !pRec){
+        if(++recSkip%2===0){
           (data.samples[recLetter] ||= []).push(f); rec--;
-          $("recStatus").textContent = `Grabando ${recLetter}… faltan ${rec}`;
-          if(rec === 0){ save(); renderLetters(); $("recStatus").textContent = `Listo: ${recLetter} tiene ${data.samples[recLetter].length} muestras.`; }
+          $("recStatus").textContent=`Grabando ${recLetter}… faltan ${rec}`;
+          if(rec===0){ save(); renderLetters(); $("recStatus").textContent=`Listo: ${recLetter} tiene ${data.samples[recLetter].length} muestras.`; }
         }
-      } else if(view === "v-read") read(f);
+      } else if(view==="v-read") read(f);
     } else {
-      if(++noHand > 10){ locked = null; stableN = 0; }
-      if(view === "v-read"){ $("guess").textContent = "–"; $("conf").style.width = "0"; }
+      if(++noHand>10){ locked=null; stableN=0; }
+      if(view==="v-read"){ $("guess").textContent="–"; $("conf").style.width="0"; }
     }
   }
   requestAnimationFrame(loop);
 }
-
 function read(f){
   const c = classify(f);
-  if(!c){ $("guess").textContent = "–"; return; }
+  if(!c){ $("guess").textContent="–"; return; }
   const ok = c.d < +$("strict").value;
   $("guess").textContent = ok ? c.letter : "?";
-  $("conf").style.width = (ok ? c.conf*100 : 0) + "%";
-  if(!ok || c.conf < 0.6){ stableN = 0; return; }
-  if(c.letter === stableL) stableN++; else { stableL = c.letter; stableN = 1; }
-  if(locked && c.letter !== locked) locked = null;
-  // La letra se escribe al mantener la seña ~0,5 s; para repetirla hay que cambiar de seña o bajar la mano
-  if(stableN >= 14 && !locked){ text += c.letter; locked = c.letter; renderText(); }
+  $("conf").style.width = (ok ? c.conf*100 : 0)+"%";
+  if(!ok || c.conf<0.6){ stableN=0; return; }
+  if(c.letter===stableL) stableN++; else { stableL=c.letter; stableN=1; }
+  if(locked && c.letter!==locked) locked=null;
+  if(stableN>=14 && !locked){ text+=c.letter; locked=c.letter; $("outText").textContent=text; }
 }
-function renderText(){ $("outText").textContent = text; }
 
-/* ---------- Entrenar ---------- */
+/* ================= Entrenar letras ================= */
 function renderLetters(){
-  const box = $("letters"); box.innerHTML = "";
+  const box=$("letters"); box.innerHTML="";
   for(const L of ALPHABET){
-    const n = (data.samples[L]||[]).length;
-    const b = document.createElement("button");
-    b.className = "lt" + (L===recLetter?" sel":"") + (n?" has":"");
-    b.innerHTML = `<b>${L}</b><small>${n}</small>`;
-    b.onclick = () => { recLetter = L; renderLetters(); };
+    const n=(data.samples[L]||[]).length;
+    const b=document.createElement("button");
+    b.className="lt"+(L===recLetter?" sel":"")+(n?" has":"");
+    b.innerHTML=`<b>${L}</b><small>${n}</small>`;
+    b.onclick=()=>{ recLetter=L; renderLetters(); };
     box.appendChild(b);
   }
-  const total = Object.values(data.samples).reduce((a,s)=>a+s.length,0);
-  const letters = Object.keys(data.samples).filter(k=>data.samples[k].length).length;
-  $("readHelp").textContent = letters
-    ? `Reconoce ${letters} letra(s) con ${total} muestras. Mantén la seña quieta para escribirla.`
-    : "Todavía no hay letras entrenadas. Ve a «Entrenar letras» o carga un archivo de datos.";
-  $("showHelp").textContent = letters ? "" : "Para mostrar señas primero hay que entrenar o cargar las letras.";
+  const letters=Object.keys(data.samples).filter(k=>data.samples[k].length).length;
+  $("readHelp").textContent = letters ? `Reconoce ${letters} letra(s). Mantén la seña quieta para escribirla.`
+                                      : "Todavía no hay letras entrenadas. Ve a Entrenar o carga un archivo de datos.";
 }
-$("recBtn").onclick = () => { rec = 40; recSkip = 0; $("recStatus").textContent = `Grabando ${recLetter}…`; };
-$("delLetterBtn").onclick = () => { delete data.samples[recLetter]; save(); renderLetters(); $("recStatus").textContent = `${recLetter} borrada.`; };
-$("exportBtn").onclick = () => {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type:"application/json"}));
-  a.download = "dataset.json"; a.click();
+$("recBtn").onclick=()=>{ rec=40; recSkip=0; $("recStatus").textContent=`Grabando ${recLetter}…`; };
+$("delLetterBtn").onclick=()=>{ delete data.samples[recLetter]; save(); renderLetters(); $("recStatus").textContent=`${recLetter} borrada.`; };
+
+/* ================= Entrenar frases ================= */
+function renderChips(){
+  const box=$("phraseChips"); box.innerHTML="";
+  for(const p of SUGGESTED){ const c=document.createElement("button"); c.className="chip"; c.textContent=p; c.onclick=()=>$("phraseName").value=p; box.appendChild(c); }
+}
+function renderPhrases(){
+  const ul=$("phraseList"); ul.innerHTML="";
+  const names=Object.keys(data.phrases).sort();
+  if(!names.length){ ul.innerHTML=`<li><small>Todavía no hay frases grabadas.</small></li>`; return; }
+  for(const n of names){
+    const li=document.createElement("li");
+    li.innerHTML=`<span>${n.toLowerCase()} <small>(${data.phrases[n].length} toma${data.phrases[n].length>1?"s":""})</small></span>`;
+    const v=document.createElement("button"); v.className="btn ghost small"; v.textContent="Ver";
+    v.onclick=()=>{ $("inText").value=n.toLowerCase(); selectTab("v-show"); play(); };
+    const d=document.createElement("button"); d.className="btn ghost small"; d.textContent="Borrar";
+    d.onclick=()=>{ delete data.phrases[n]; save(); renderPhrases(); };
+    li.append(v,d); ul.appendChild(li);
+  }
+}
+$("phraseRecBtn").onclick=()=>{
+  const name=clean($("phraseName").value);
+  if(!name){ $("phraseStatus").textContent="Escribe el nombre de la frase primero."; return; }
+  rec=0; pRec={name, phase:"count", until:performance.now()+3000, dur:+$("phraseDur").value, frames:[], skip:0};
 };
-$("importFile").onchange = async e => {
-  try{ const j = JSON.parse(await e.target.files[0].text()); if(!j.samples) throw 0; data = j; save(); renderLetters(); $("recStatus").textContent = "Datos cargados."; }
-  catch(_){ $("recStatus").textContent = "Ese archivo no es un dataset válido."; }
+function phraseTick(hands){
+  const now=performance.now();
+  if(pRec.phase==="count"){
+    const s=Math.ceil((pRec.until-now)/1000);
+    $("phraseStatus").textContent = s>0 ? `Prepárate… ${s}` : "";
+    if(now>=pRec.until){ pRec.phase="rec"; pRec.start=now; }
+    return;
+  }
+  const t=now-pRec.start;
+  $("phraseStatus").textContent=`Grabando «${pRec.name.toLowerCase()}»… ${((pRec.dur-t)/1000).toFixed(1)} s`;
+  if(++pRec.skip%2===0){
+    const h=hands.map(toScene).sort((a,b)=>a[0]-b[0]); // orden de izquierda a derecha
+    pRec.frames.push({t:Math.round(t), h});
+  }
+  if(t>=pRec.dur){
+    const takes = (data.phrases[pRec.name] ||= []);
+    takes.push({dur:pRec.dur, frames:pRec.frames});
+    if(takes.length>3) takes.shift();
+    const withHands = pRec.frames.filter(f=>f.h.length).length;
+    const ok = save();
+    if(ok) $("phraseStatus").textContent = withHands<pRec.frames.length*0.5
+      ? `Guardada, pero las manos se perdieron en varios momentos. Prueba con más luz.`
+      : `Guardada: «${pRec.name.toLowerCase()}».`;
+    pRec=null; renderPhrases();
+  }
+}
+
+/* ================= Exportar / importar ================= */
+$("exportBtn").onclick=()=>{
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));
+  a.download="dataset.json"; a.click();
+};
+$("importFile").onchange=async e=>{
+  try{ const j=JSON.parse(await e.target.files[0].text()); if(!j.samples) throw 0; data=j; fix(); save(); renderLetters(); renderPhrases(); $("recStatus").textContent="Datos cargados."; }
+  catch(_){ $("recStatus").textContent="Ese archivo no es un dataset válido."; }
 };
 
-/* ---------- Texto a señas ---------- */
-const sc = $("signCanvas"), sx = sc.getContext("2d");
-function meanSign(L){
-  const arr = data.samples[L]; if(!arr || !arr.length) return null;
-  const m = new Array(63).fill(0);
-  for(const s of arr) for(let i=0;i<63;i++) m[i] += s[i]/arr.length;
-  return m;
+/* ================= Escena 3D ================= */
+const box3d=$("view3d");
+const renderer=new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+box3d.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(35,1,0.1,50); cam.position.set(0,-0.1,4.4);
+scene.add(new THREE.HemisphereLight(0xffffff,0x445566,0.9));
+const sun=new THREE.DirectionalLight(0xffffff,0.8); sun.position.set(1.5,2,3); scene.add(sun);
+const root=new THREE.Group(); scene.add(root);
+
+// Silueta de referencia (cabeza y torso) para ubicar las señas cerca de la cara o el pecho
+const bodyMat=new THREE.MeshStandardMaterial({color:0x8fa3b3, roughness:.9, transparent:true, opacity:.35});
+const headY=(0.5-HEAD.y)*K, headR=HEAD.r*K;
+const head=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),bodyMat); head.scale.set(headR*0.82,headR*1.1,headR*0.9); head.position.set(0,headY,-0.25); root.add(head);
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.3,20),bodyMat); neck.position.set(0,headY-headR*1.1-0.1,-0.28); root.add(neck);
+const torso=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),bodyMat); torso.scale.set(0.78,0.62,0.3); torso.position.set(0,headY-headR*1.1-0.8,-0.35); root.add(torso);
+
+// Mano articulada: esferas en las articulaciones, cilindros en los huesos y una palma
+const skinMat=new THREE.MeshStandardMaterial({color:0xe2a882, roughness:.55, metalness:0});
+const palmMat=new THREE.MeshStandardMaterial({color:0xe2a882, roughness:.6, side:THREE.DoubleSide});
+const JR=[.24,.2,.17,.15,.13, .17,.15,.13,.11, .17,.15,.13,.11, .16,.14,.12,.105, .15,.12,.105,.095];
+const sph=new THREE.SphereGeometry(1,18,14), cyl=new THREE.CylinderGeometry(1,1,1,16);
+const PALM=[0,1,5,9,13,17];
+function makeHand(){
+  const g=new THREE.Group();
+  const joints=JR.map(()=>{ const m=new THREE.Mesh(sph,skinMat); g.add(m); return m; });
+  const bones=CONN.map(()=>{ const m=new THREE.Mesh(cyl,skinMat); g.add(m); return m; });
+  const pg=new THREE.BufferGeometry();
+  pg.setAttribute("position",new THREE.BufferAttribute(new Float32Array(7*3),3));
+  pg.setIndex([6,0,1, 6,1,2, 6,2,3, 6,3,4, 6,4,5, 6,5,0]);
+  const palm=new THREE.Mesh(pg,palmMat); g.add(palm);
+  root.add(g); return {g,joints,bones,palm};
 }
-function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
-function drawHand(f, label){
-  const W = sc.width, H = sc.height;
-  sx.clearRect(0,0,W,H);
-  sx.fillStyle = css("--muted"); sx.font = "700 44px Atkinson Hyperlegible, sans-serif"; sx.textAlign = "left";
-  if(label) sx.fillText(label, 24, 60);
-  if(!f){
-    sx.textAlign = "center"; sx.font = "24px Atkinson Hyperlegible, sans-serif";
-    sx.fillText(label ? `Sin datos para ${label}` : "", W/2, H/2); return;
-  }
-  // Ajusta la mano al lienzo
-  const P = []; for(let i=0;i<21;i++) P.push([f[i*3], f[i*3+1]]);
-  const xs = P.map(p=>p[0]), ys = P.map(p=>p[1]);
-  const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
-  const s = Math.min(W*0.7/(maxX-minX||1), H*0.7/(maxY-minY||1));
-  const ox = W/2 - (minX+maxX)/2*s, oy = H/2 + 20 - (minY+maxY)/2*s;
-  const Q = P.map(([x,y]) => [x*s+ox, y*s+oy]);
-  const skin = css("--skin"), edge = css("--skin-edge");
-  // Palma
-  sx.beginPath(); [0,1,5,9,13,17].forEach((i,k)=> k? sx.lineTo(...Q[i]) : sx.moveTo(...Q[i])); sx.closePath();
-  sx.fillStyle = skin; sx.strokeStyle = edge; sx.lineWidth = 3; sx.lineJoin = "round"; sx.fill(); sx.stroke();
-  // Dedos: borde y luego relleno, para que parezcan volumen y no líneas
-  const fingers = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]];
-  const wid = s*0.17;
-  for(const pass of [0,1]){
-    for(const fg of fingers){
-      sx.beginPath(); sx.moveTo(...Q[fg[0]]); for(const i of fg.slice(1)) sx.lineTo(...Q[i]);
-      sx.lineCap = "round"; sx.lineJoin = "round";
-      sx.lineWidth = pass ? wid : wid + 6; sx.strokeStyle = pass ? skin : edge; sx.stroke();
+const hands3d=[makeHand(),makeHand()];
+const up=new THREE.Vector3(0,1,0), va=new THREE.Vector3(), vb=new THREE.Vector3(), vd=new THREE.Vector3();
+function setHand(H,p){
+  if(!p){ H.g.visible=false; return; }
+  H.g.visible=true;
+  const size=Math.hypot(p[27]-p[0],p[28]-p[1],p[29]-p[2])||0.3; // muñeca -> nudillo medio
+  const R=JR.map(r=>r*size);
+  for(let i=0;i<21;i++){ H.joints[i].position.set(p[i*3],p[i*3+1],p[i*3+2]); H.joints[i].scale.setScalar(R[i]); }
+  CONN.forEach(([a,b],k)=>{
+    va.set(p[a*3],p[a*3+1],p[a*3+2]); vb.set(p[b*3],p[b*3+1],p[b*3+2]);
+    vd.subVectors(vb,va); const len=vd.length()||1e-4;
+    const m=H.bones[k]; m.position.addVectors(va,vb).multiplyScalar(.5);
+    m.quaternion.setFromUnitVectors(up,vd.normalize());
+    const r=Math.min(R[a],R[b])*0.95; m.scale.set(r,len,r);
+  });
+  const pos=H.palm.geometry.attributes.position; let cx=0,cy=0,cz=0;
+  PALM.forEach((i,k)=>{ pos.setXYZ(k,p[i*3],p[i*3+1],p[i*3+2]); cx+=p[i*3]; cy+=p[i*3+1]; cz+=p[i*3+2]; });
+  pos.setXYZ(6,cx/6,cy/6,cz/6); pos.needsUpdate=true; H.palm.geometry.computeVertexNormals(); H.palm.geometry.computeBoundingSphere();
+}
+// Letra (pose promedio) -> puntos 3D frente al pecho, del lado de la mano dominante
+function letterPose(L){
+  const arr=data.samples[L]; if(!arr||!arr.length) return null;
+  const m=new Array(63).fill(0);
+  for(const s of arr) for(let i=0;i<63;i++) m[i]+=s[i]/arr.length;
+  const S=0.36, wx=-0.42, wy=headY-headR*1.1-0.95, wz=0.35, out=[];
+  for(let i=0;i<21;i++) out.push(wx+m[i*3]*S, wy-m[i*3+1]*S, wz-m[i*3+2]*S);
+  return out;
+}
+
+// Girar con el dedo o el mouse
+let drag=null, rotY=0, rotX=0;
+box3d.addEventListener("pointerdown",e=>{ drag={x:e.clientX,y:e.clientY,ry:rotY,rx:rotX}; box3d.setPointerCapture(e.pointerId); });
+box3d.addEventListener("pointermove",e=>{ if(!drag) return; rotY=drag.ry+(e.clientX-drag.x)*0.01; rotX=Math.max(-0.8,Math.min(0.8,drag.rx+(e.clientY-drag.y)*0.01)); });
+box3d.addEventListener("pointerup",()=>drag=null);
+box3d.addEventListener("dblclick",()=>{ rotX=rotY=0; });
+
+function resize3d(){ const w=box3d.clientWidth, h=box3d.clientHeight; if(!w) return; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); }
+new ResizeObserver(resize3d).observe(box3d);
+
+/* ================= Texto a señas: línea de tiempo ================= */
+// Busca primero frases grabadas (la más larga posible); si no hay, deletrea.
+let tl=null; // {keys:[{t,h:[a,b]}], segs:[{t0,t1,label,i}], end, start}
+function buildTimeline(raw){
+  const words=clean(raw).split(" ").filter(Boolean);
+  const keys=[], segs=[]; let t=0; const TR=280, HOLD=650;
+  let i=0;
+  while(i<words.length){
+    let n=words.length-i, found=null;
+    for(;n>=1;n--){ const k=words.slice(i,i+n).join(" "); if(data.phrases[k]){ found=k; break; } }
+    if(found){
+      const takes=data.phrases[found], take=takes[takes.length-1];
+      const t0=t; t+=TR;
+      for(const f of take.frames) keys.push({t:t+f.t, h:[f.h[0]||null, f.h[1]||null]});
+      t+=take.dur; segs.push({t0,t1:t,label:found.toLowerCase(),w:[i,i+n]}); i+=n;
+    } else {
+      for(const ch of words[i]){
+        const t0=t; t+=TR; const p=ALPHABET.includes(ch)?letterPose(ch):null;
+        keys.push({t,h:[p,null]}); t+=HOLD; keys.push({t,h:[p,null]});
+        segs.push({t0,t1:t,label:ch,w:[i,i+1],missing:!p});
+      }
+      i++;
     }
+    t+=250;
   }
-  sx.fillStyle = edge;
-  for(const fg of fingers) for(const i of fg.slice(1,3)){ sx.globalAlpha = .35; sx.beginPath(); sx.arc(...Q[i], wid*0.18, 0, 7); sx.fill(); }
-  sx.globalAlpha = 1;
+  return {keys,segs,end:t,words};
 }
-let playTimer = null;
+function lerpArr(a,b,u){ if(!a) return b; if(!b) return a; const o=new Array(a.length); for(let i=0;i<a.length;i++) o[i]=a[i]+(b[i]-a[i])*u; return o; }
+function poseAt(t){
+  const k=tl.keys; if(!k.length) return [null,null];
+  if(t<=k[0].t) return k[0].h;
+  for(let i=0;i<k.length-1;i++){
+    if(t<k[i+1].t){ const u=(t-k[i].t)/(k[i+1].t-k[i].t||1); return [0,1].map(s=>lerpArr(k[i].h[s],k[i+1].h[s],u)); }
+  }
+  return k[k.length-1].h;
+}
+let playT=0, lastFrame=0, playing=false, curSeg=-1;
 function play(){
-  stop();
-  const t = $("inText").value.toUpperCase().normalize("NFD").replace(/[\u0300-\u0301\u0308]/g,"").normalize("NFC");
-  const chars = [...t]; let i = 0;
-  const step = () => {
-    if(i >= chars.length){ $("wordView").innerHTML = escape(t); drawHand(null, ""); return; }
-    const ch = chars[i];
-    $("wordView").innerHTML = escape(t.slice(0,i)) + `<span class="cur">${escape(ch===" "?"␣":ch)}</span>` + escape(t.slice(i+1));
-    if(ALPHABET.includes(ch)) drawHand(meanSign(ch), ch); else drawHand(null, "");
-    i++; playTimer = setTimeout(step, ch===" " ? +$("speed").value*0.6 : +$("speed").value);
-  };
-  step();
+  tl=buildTimeline($("inText").value);
+  if(!tl.keys.length){ $("wordView").textContent="No hay letras ni frases grabadas para mostrar esto todavía."; return; }
+  playT=0; curSeg=-1; playing=true; lastFrame=performance.now();
 }
-function stop(){ clearTimeout(playTimer); }
-function escape(s){ return s.replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
-$("playBtn").onclick = play; $("stopBtn").onclick = stop;
+function stop(){ playing=false; }
+function showSeg(idx){
+  const s=tl.segs[idx];
+  $("tag3d").textContent = s ? (s.missing ? `${s.label} (sin datos)` : s.label) : "";
+  $("wordView").innerHTML = tl.words.map((w,j)=>`<span class="${s&&j>=s.w[0]&&j<s.w[1]?"cur":""}">${w.toLowerCase()}</span>`).join(" ");
+}
+function render3d(now){
+  if(view==="v-show"){
+    if(playing && tl){
+      playT += (now-lastFrame)*(+$("speed").value);
+      const h=poseAt(playT); setHand(hands3d[0],h[0]); setHand(hands3d[1],h[1]);
+      const idx=tl.segs.findIndex(s=>playT>=s.t0&&playT<s.t1);
+      if(idx!==curSeg){ curSeg=idx; showSeg(idx); }
+      if(playT>tl.end){ playing=false; showSeg(-1); }
+    }
+    root.rotation.y += (rotY-root.rotation.y)*0.2; root.rotation.x += (rotX-root.rotation.x)*0.2;
+    renderer.render(scene,cam);
+  }
+  lastFrame=now;
+  requestAnimationFrame(render3d);
+}
+$("playBtn").onclick=play; $("stopBtn").onclick=stop;
 
-/* ---------- Pestañas y botones ---------- */
-document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
-  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x===t));
-  view = t.dataset.view; rec = 0;
-  $("camBlock").classList.toggle("hidden", view === "v-show");
-  $("v-show").classList.toggle("hidden", view !== "v-show");
-  $("v-read").classList.toggle("hidden", view !== "v-read");
-  $("v-train").classList.toggle("hidden", view !== "v-train");
-});
-$("startBtn").onclick = startCam;
-$("flipBtn").onclick = () => { facing = facing === "user" ? "environment" : "user"; startCam(); };
-$("spaceBtn").onclick = () => { text += " "; renderText(); };
-$("delBtn").onclick = () => { text = text.slice(0,-1); renderText(); };
-$("clearBtn").onclick = () => { text = ""; renderText(); };
+/* ================= Pestañas ================= */
+function selectTab(v){
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", x.dataset.view===v));
+  view=v; rec=0; pRec=null;
+  $("camBlock").classList.toggle("hidden", v==="v-show");
+  $("v-show").classList.toggle("hidden", v!=="v-show");
+  $("v-read").classList.toggle("hidden", v!=="v-read");
+  $("v-train").classList.toggle("hidden", v!=="v-train");
+  if(v==="v-show") resize3d();
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>selectTab(t.dataset.view));
+$("startBtn").onclick=startCam;
+$("flipBtn").onclick=()=>{ facing=facing==="user"?"environment":"user"; startCam(); };
+$("spaceBtn").onclick=()=>{ text+=" "; $("outText").textContent=text; };
+$("delBtn").onclick=()=>{ text=text.slice(0,-1); $("outText").textContent=text; };
+$("clearBtn").onclick=()=>{ text=""; $("outText").textContent=text; };
 
-load(); await loadShared(); renderLetters(); drawHand(null, "");
+load(); await loadShared();
+renderLetters(); renderChips(); renderPhrases();
+setHand(hands3d[0],null); setHand(hands3d[1],null);
+requestAnimationFrame(render3d);
 initDetector();
 </script>
 </body>
